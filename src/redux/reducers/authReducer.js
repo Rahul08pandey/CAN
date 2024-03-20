@@ -16,15 +16,16 @@ const authReducer = (state = initialState, action) => {
         loading: false,
         isAuthenticated: true,
         user: action.payload,
-
         error: null,
       };
+
     case LOGOUT:
       return {
         ...state,
         user: null,
-        isAuthenticated: false,
+        // isAuthenticated: false,
       };
+
     case SET_STATES:
       return {
         ...state,

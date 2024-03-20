@@ -16,23 +16,28 @@ import LoginForm from './LoginForm';
 import {useDispatch, useSelector} from 'react-redux';
 import {loginUser} from '../../redux/services/api';
 import {loginSuccess} from '../../redux/actions/actions';
+import {useLoginUserMutation} from '../../redux/services/authServices';
 
 const Login = ({navigation, onSubmit}) => {
-  const [loading, setLoading] = useState(false);
+  const initialValues = {
+    email: '',
+    password: '',
+  };
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const loginData = useSelector(state => state.auth.user);
   console.log('loginData:', loginData);
+  const [loginUserMutation] = useLoginUserMutation();
 
-  const handleLogin = async (email, password) => {
+  const handleLogin = async initialValues => {
     try {
       setLoading(true);
-      const response = await loginUser(email, password);
+      const response = await loginUserMutation(initialValues);
       setLoading(false);
-
-      // console.log('status', response.status);
-      if (response.status) {
-        dispatch(loginSuccess(response));
+      if (response.data.status) {
+        const userData = response.data;
+        dispatch(loginSuccess(userData));
         navigation.navigate('Home');
       } else {
         Alert.alert('Login Failed', 'Invalid email or password');
@@ -51,11 +56,6 @@ const Login = ({navigation, onSubmit}) => {
   const handleReset = () => {
     navigation.navigate('ForgotPassword');
     console.log('first');
-  };
-
-  const initialValues = {
-    email: '',
-    password: '',
   };
 
   return (

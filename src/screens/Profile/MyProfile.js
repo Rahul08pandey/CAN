@@ -52,12 +52,8 @@ const MyProfile = ({navigation}) => {
       <View style={styles.subContainer}>
         <Text style={styles.profileTxt}>My Profile</Text>
         <View style={styles.profileContainer}>
-          <TouchableOpacity
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Image source={IMAGES.camera} style={styles.icon} />
+          <TouchableOpacity>
+            <Image source={IMAGES.camera} />
           </TouchableOpacity>
         </View>
         <View style={styles.inputContainer}>

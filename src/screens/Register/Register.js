@@ -20,22 +20,35 @@ import RegisterForm from './RegisterForm';
 import {registerUser, fetchStates} from '../../redux/services/api';
 import {useSelector, useDispatch} from 'react-redux';
 import {setStates} from '../../redux/actions/actions';
+import {
+  useFetchStatesQuery,
+  useRegisterUserMutation,
+} from '../../redux/services/authServices';
 
 const Register = ({navigation, onSubmit}) => {
-  const [showAlert, setShowAlert] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const statesData = useSelector(state => state.auth.states);
-  // console.log('states!!!!!!!!!:', statesData);
+  const initialValues = {
+    name: '',
+    email: '',
+    password: '',
+    organization: '',
+    state: '',
+    city: '',
+  };
+  const [registerUserMutation] = useRegisterUserMutation();
+  const {data, error} = useFetchStatesQuery();
 
-  const handleRegister = async values => {
+  const handleRegister = async initialValues => {
     try {
       setLoading(true);
-      const response = await registerUser(values);
+      const response = await registerUserMutation(initialValues);
       setLoading(false);
-      // console.log('status', response.status);
-      if (response.status) {
+      if (response.data.status) {
+        const registerData = response.data;
         setShowAlert(true);
       } else {
         Alert.alert(
@@ -54,17 +67,16 @@ const Register = ({navigation, onSubmit}) => {
     const fetchStatesData = async () => {
       try {
         setLoading(true);
-        const statesResponse = await fetchStates();
-        // console.log('statesResponse:', statesResponse);
+        const statesResponse = await data.result;
         dispatch(setStates(statesResponse));
       } catch (err) {
-        console.log('Error fetching states:', err);
+        console.error('Error fetching states:', err);
       } finally {
         setLoading(false);
       }
     };
     fetchStatesData();
-  }, [dispatch]);
+  }, []);
 
   const openLogin = () => {
     navigation.navigate('Login');
@@ -73,15 +85,6 @@ const Register = ({navigation, onSubmit}) => {
   const handleLogin = () => {
     setShowAlert(false);
     navigation.navigate('Login');
-  };
-
-  const initialValues = {
-    name: '',
-    email: '',
-    password: '',
-    organization: '',
-    state: '',
-    city: '',
   };
 
   return (

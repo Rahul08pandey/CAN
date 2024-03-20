@@ -1,35 +1,55 @@
 import {Image, ScrollView, Text, TextInput, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styles from './styles';
 import Header from '../../components/Header/Header';
 import CustomButton from '../../components/common/CustomButton';
 import IMAGES from '../../assets/images/index';
-import {Formik} from 'formik';
+import {useReferralMutation} from '../../redux/services/authServices';
+import {referral} from '../../redux/services/api';
+import {getSystemErrorName} from 'util';
 
 const Referrals = () => {
+  const [loading, setLoading] = useState(false);
   const [submitData, setSubmitData] = useState([]);
-  const [data, setData] = useState([
-    {
-      name: '',
-      email: '',
-      date: '',
-      contact: '',
-    },
-  ]);
+  const [referrals, setReferrals] = useState([]);
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
+  const [phone, setPhone] = useState();
+  // const [data, setData] = useState([
+  //   {
+  //     name: '',
+  //     email: '',
+  //     date: '',
+  //     phone: '',
+  //   },
+  // ]);
+  // const [referralMutation] = useReferralMutation();
 
-  const handleInputChange = (key, value) => {
-    setData(prevState => ({
-      ...prevState,
-      [key]: value,
-    }));
-  };
+  // const handleInputChange = (key, value) => {
+  //   setData(prevState => ({
+  //     ...prevState,
+  //     [key]: value,
+  //   }));
+  // };
 
-  const handleSubmit = () => {
+  // useEffect(() => {
+  //   const getReferrals = async () => {
+  //     try {
+  //       const response = await referral();
+  //       console.log('response', response);
+  //       setReferrals(response);
+  //     } catch (error) {
+  //       throw new error();
+  //     }
+  //   };
+  //   getReferrals();
+  // }, []);
+
+  const handleSubmit = async data => {
     const currentDate = new Date().toLocaleDateString();
     const newData = {...data, date: currentDate};
-
     setSubmitData(prevData => [...prevData, newData]);
-    setData({name: '', email: '', date: '', contact: ''});
+    setData({name: '', email: '', date: '', phone: ''});
   };
 
   return (
@@ -44,31 +64,34 @@ const Referrals = () => {
         <View style={styles.inputContainer}>
           <Text style={styles.txtInputHeading}>Name</Text>
           <TextInput
-            value={data.name}
+            value={name}
             style={styles.txtInput}
             placeholder="Enter Name"
             placeholderTextColor="rgba(0, 0, 0, 0.27)"
-            onChangeText={text => handleInputChange('name', text)}
+            // onChangeText={text => handleInputChange('name', text)}
+            onChangeText={text => setName(text)}
           />
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.txtInputHeading}>Email</Text>
           <TextInput
-            value={data.email}
+            value={email}
             style={styles.txtInput}
             placeholder="Enter Email"
             placeholderTextColor="rgba(0, 0, 0, 0.27)"
-            onChangeText={text => handleInputChange('email', text)}
+            // onChangeText={text => handleInputChange('email', text)}
+            onChangeText={text => setEmail(text)}
           />
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.txtInputHeading}>Phone</Text>
           <TextInput
-            value={data.contact}
+            value={phone}
             style={styles.txtInput}
             placeholder="Enter Phone"
             placeholderTextColor="rgba(0, 0, 0, 0.27)"
-            onChangeText={text => handleInputChange('contact', text)}
+            // onChangeText={text => handleInputChange('phone', text)}
+            onChangeText={text => setPhone(text)}
           />
         </View>
         <CustomButton title="Submit" onPress={handleSubmit} />
@@ -117,7 +140,7 @@ const Referrals = () => {
                   alignItems: 'center',
                 }}>
                 <Image source={IMAGES.contact} />
-                <Text style={styles.referralData}>{item.contact}</Text>
+                <Text style={styles.referralData}>{item.phone}</Text>
               </View>
             </View>
           </View>

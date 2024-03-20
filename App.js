@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {Provider} from 'react-redux';
-import store from './src/redux/store/store';
+import {store, persistor} from './src/redux/store/store';
+import {PersistGate} from 'redux-persist/integration/react';
 import SplashScreen from 'react-native-splash-screen';
 import RootNavigator from './src/navigation/RootNavigator';
 
@@ -11,7 +12,9 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      <RootNavigator />
+      <PersistGate loading={null} persistor={persistor}>
+        <RootNavigator />
+      </PersistGate>
     </Provider>
   );
 };

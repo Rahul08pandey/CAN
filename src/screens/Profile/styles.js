@@ -23,11 +23,9 @@ export default styles = StyleSheet.create({
     marginTop: moderateScale(10),
     borderRadius: moderateScale(50),
     borderWidth: moderateScale(0.2),
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#D9D9D9',
-  },
-
-  icon: {
-    position: 'absolute',
   },
 
   inputContainer: {

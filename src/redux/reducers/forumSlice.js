@@ -4,8 +4,8 @@ export const forumSlice = createSlice({
   name: 'forum',
   initialState: {
     error: null,
-    loading: false,
     category: [],
+    loading: false,
   },
   reducers: {
     forumData: (state, action) => {

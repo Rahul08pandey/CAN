@@ -7,12 +7,12 @@ import {
   Linking,
   ScrollView,
 } from 'react-native';
-import Header from '../../components/Header/Header';
-import {Calendar} from 'react-native-calendars';
 import styles from './styles';
-import IMAGES from '../../assets/images';
-import {schedule} from '../../redux/services/api';
 import {useEffect} from 'react';
+import IMAGES from '../../assets/images';
+import {Calendar} from 'react-native-calendars';
+import {schedule} from '../../redux/services/api';
+import Header from '../../components/Header/Header';
 
 const Schedule = () => {
   const [events, setEvents] = useState([]);

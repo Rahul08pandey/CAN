@@ -7,7 +7,7 @@ export const clientApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
     prepareHeaders: async (headers, {getState, endpoints}) => {
-      const token = getState().auth.user.Token;
+      const token = getState().auth.user?.Token;
       // console.log(token, '.>>>>>token');
 
       if (token) {

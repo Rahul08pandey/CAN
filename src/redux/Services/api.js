@@ -56,25 +56,25 @@ const BASE_URL = 'http://54.190.192.105:9185/angel';
 //   }
 // };
 
-export const forumCategory = async () => {
-  try {
-    const response = await fetch(`${BASE_URL}/get_all_forum_Category`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application.json',
-      },
-    });
+// export const forumCategory = async () => {
+//   try {
+//     const response = await fetch(`${BASE_URL}/get_all_forum_Category`, {
+//       method: 'GET',
+//       headers: {
+//         'Content-Type': 'application.json',
+//       },
+//     });
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch forum data');
-    }
+//     if (!response.ok) {
+//       throw new Error('Failed to fetch forum data');
+//     }
 
-    const forumData = await response.json();
-    return forumData;
-  } catch (error) {
-    throw error;
-  }
-};
+//     const forumData = await response.json();
+//     return forumData;
+//   } catch (error) {
+//     throw error;
+//   }
+// };
 
 // export const forumAnswer = async () => {
 //   try {
@@ -97,29 +97,27 @@ export const forumCategory = async () => {
 //   }
 // };
 
-export const schedule = async () => {
-  try {
-    const response = await fetch(`${BASE_URL}/get_Events`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+// export const schedule = async () => {
+//   try {
+//     const response = await fetch(`${BASE_URL}/get_Events`, {
+//       method: 'GET',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//     });
 
-    Authentication_Key = data.Token;
-    console.log('DATA.....', data.Token);
-    // console.log(response, 'nwnbuwugw');
-    if (!response.ok) {
-      throw new Error('Failed to fetch event data');
-    }
-    const eventsData = await response.json();
-    console.log(eventsData, '>>>>>>>>>>EData');
-    return eventsData;
-  } catch (error) {
-    console.log('error:', error);
-    throw error;
-  }
-};
+//     // console.log(response, 'nwnbuwugw');
+//     if (!response.ok) {
+//       throw new Error('Failed to fetch event data');
+//     }
+//     const eventsData = await response.json();
+//     console.log(eventsData, '>>>>>>>>>>EData');
+//     return eventsData;
+//   } catch (error) {
+//     console.log('error:', error);
+//     throw error;
+//   }
+// };
 
 // export const portfolio = async () => {
 //   try {

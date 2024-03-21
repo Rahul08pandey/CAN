@@ -47,7 +47,7 @@ const Register = ({navigation, onSubmit}) => {
       setLoading(true);
       const response = await registerUserMutation(initialValues);
       setLoading(false);
-      if (response.data.status) {
+      if (response.data) {
         const registerData = response.data;
         setShowAlert(true);
       } else {
@@ -68,6 +68,7 @@ const Register = ({navigation, onSubmit}) => {
       try {
         setLoading(true);
         const statesResponse = await data.result;
+        console.log(statesResponse, '??????statesREsponse');
         dispatch(setStates(statesResponse));
       } catch (err) {
         console.error('Error fetching states:', err);

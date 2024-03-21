@@ -3,10 +3,10 @@ import {clientApi} from './clientApi';
 export const authService = clientApi.injectEndpoints({
   endpoints: builder => ({
     loginUser: builder.mutation({
-      query: body => ({
+      query: credentials => ({
         url: `/login`,
         method: 'POST',
-        body: body,
+        body: credentials,
       }),
     }),
 
@@ -26,9 +26,30 @@ export const authService = clientApi.injectEndpoints({
     }),
 
     fetchEvents: builder.query({
-      query: body => ({
+      query: () => ({
         url: `/get_Events`,
         method: 'GET',
+      }),
+    }),
+
+    fetchForumCategory: builder.query({
+      query: () => ({
+        url: `/get_all_forum_Category`,
+        method: 'GET',
+      }),
+    }),
+
+    fetchReferralById: builder.query({
+      query: _id => ({
+        url: `/referral/list_by_mandate?user_mandate=${_id}`,
+        method: 'GET',
+      }),
+    }),
+
+    addReferrals: builder.mutation({
+      query: body => ({
+        url: `/add/referral`,
+        method: 'POST',
         body: body,
       }),
     }),
@@ -40,4 +61,8 @@ export const {
   useRegisterUserMutation,
   useFetchStatesQuery,
   useFetchEventsQuery,
+  useFetchForumCategoryQuery,
+  useLazyFetchReferralByIdQuery,
+  useLazyFetchPortfolioQuery,
+  useAddReferralsMutation,
 } = authService;

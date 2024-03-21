@@ -3,22 +3,18 @@ import React, {useEffect, useState} from 'react';
 import Header from '../../components/Header/Header';
 import styles from './styles';
 import IMAGES from '../../assets/images';
-import {portfolio} from '../../redux/services/api';
+import {useLazyFetchPortfolioQuery} from '../../redux/services/authServices';
 
 export default function Portfolio() {
   const [portfolioData, setPortfolioData] = useState([]);
+  const [data, error] = useLazyFetchPortfolioQuery();
 
   useEffect(() => {
     const getPortfolio = async () => {
       try {
-        const portfolioResponse = await portfolio();
-        console.log(portfolioResponse, 'RESPONSE.....////');
+        const portfolioResponse = await data;
+        console.log(portfolioResponse, 'portfolioRESPONSE....../////');
         setPortfolioData(portfolioResponse);
-        // if (portfolioResponse && portfolioResponse.result) {
-        //   setPortfolioData(portfolioResponse.result);
-        // } else {
-        //   console.error('Invalid portfolio data received:', portfolioResponse);
-        // }
       } catch (error) {
         throw new error();
       }
@@ -76,14 +72,22 @@ export default function Portfolio() {
       <View style={styles.subContainer}>
         <Text style={styles.heading}>My Portfolio</Text>
 
-        <View>
-          <FlatList
-            data={portfolioData}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => index.toString()}
-            ListEmptyComponent={<Text>No data available</Text>}
-          />
-        </View>
+        <FlatList
+          data={portfolioData}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+          ListEmptyComponent={
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text style={{fontSize: 24, color: '#000000A8'}}>
+                No data available
+              </Text>
+            </View>
+          }
+        />
       </View>
     </View>
   );

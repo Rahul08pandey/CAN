@@ -14,15 +14,12 @@ import CustomHeader from '../../components/common/CustomHeader';
 import IMAGES from '../../assets/images';
 import LoginForm from './LoginForm';
 import {useDispatch, useSelector} from 'react-redux';
-import {loginUser} from '../../redux/services/api';
 import {loginSuccess} from '../../redux/actions/actions';
 import {useLoginUserMutation} from '../../redux/services/authServices';
 
 const Login = ({navigation, onSubmit}) => {
-  const initialValues = {
-    email: '',
-    password: '',
-  };
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -30,10 +27,11 @@ const Login = ({navigation, onSubmit}) => {
   console.log('loginData:', loginData);
   const [loginUserMutation] = useLoginUserMutation();
 
-  const handleLogin = async initialValues => {
+  const handleLogin = async () => {
     try {
       setLoading(true);
-      const response = await loginUserMutation(initialValues);
+      const credentials = {email, password};
+      const response = await loginUserMutation(credentials);
       setLoading(false);
       if (response.data.status) {
         const userData = response.data;
@@ -61,60 +59,48 @@ const Login = ({navigation, onSubmit}) => {
   return (
     <View style={styles.mainContainer}>
       <CustomHeader />
-      <Formik
-        initialValues={initialValues}
-        onSubmit={handleLogin}
-        validationSchema={LoginForm}>
-        {({handleSubmit, values, errors, touched, handleChange}) => (
-          <View style={styles.loginContainer}>
-            <Text style={styles.loginHeading}>Login</Text>
-            <View style={styles.inputContainer}>
-              <Text style={styles.txtInputHeading}>Email</Text>
-              <TextInput
-                placeholder="Enter Email"
-                value={values.email}
-                onChangeText={handleChange('email')}
-                placeholderTextColor="rgba(0, 0, 0, 0.27)"
-                style={styles.txtInput}
-              />
-              {errors.email && (
-                <Text style={styles.errTxt}>{errors.email}</Text>
-              )}
-            </View>
-            <View style={styles.inputContainer}>
-              <Text style={styles.txtInputHeading}>Password</Text>
-              <View style={styles.inputTxt}>
-                <TextInput
-                  placeholder="Enter Password"
-                  value={values.password}
-                  onChangeText={handleChange('password')}
-                  placeholderTextColor="rgba(0, 0, 0, 0.27)"
-                  style={styles.txtInput1}
-                  secureTextEntry={!showPassword}
-                />
-                <TouchableOpacity
-                  onPress={() => setShowPassword(!showPassword)}
-                  style={styles.eyeIcon}>
-                  <Image source={IMAGES.eye} />
-                </TouchableOpacity>
-              </View>
-              {errors.password && (
-                <Text style={styles.errTxt}>{errors.password}</Text>
-              )}
-            </View>
-            <View style={styles.btnView}>
-              <TouchableOpacity onPress={handleReset}>
-                <Text style={styles.btnTxt}>Forgot Password ?</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={handleRegister}>
-                <Text style={styles.btnTxt}>Become an Investor</Text>
-              </TouchableOpacity>
-            </View>
 
-            <CustomButton title="Login" onPress={handleSubmit} />
+      <View style={styles.loginContainer}>
+        <Text style={styles.loginHeading}>Login</Text>
+        <View style={styles.inputContainer}>
+          <Text style={styles.txtInputHeading}>Email</Text>
+          <TextInput
+            placeholder="Enter Email"
+            value={email}
+            onChangeText={setEmail}
+            placeholderTextColor="rgba(0, 0, 0, 0.27)"
+            style={styles.txtInput}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.txtInputHeading}>Password</Text>
+          <View style={styles.inputTxt}>
+            <TextInput
+              placeholder="Enter Password"
+              value={password}
+              onChangeText={setPassword}
+              placeholderTextColor="rgba(0, 0, 0, 0.27)"
+              style={styles.txtInput1}
+              secureTextEntry={!showPassword}
+            />
+            <TouchableOpacity
+              onPress={() => setShowPassword(!showPassword)}
+              style={styles.eyeIcon}>
+              <Image source={IMAGES.eye} />
+            </TouchableOpacity>
           </View>
-        )}
-      </Formik>
+        </View>
+        <View style={styles.btnView}>
+          <TouchableOpacity onPress={handleReset}>
+            <Text style={styles.btnTxt}>Forgot Password ?</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleRegister}>
+            <Text style={styles.btnTxt}>Become an Investor</Text>
+          </TouchableOpacity>
+        </View>
+
+        <CustomButton title="Login" onPress={handleLogin} />
+      </View>
     </View>
   );
 };

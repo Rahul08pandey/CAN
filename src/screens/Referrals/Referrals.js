@@ -4,52 +4,50 @@ import styles from './styles';
 import Header from '../../components/Header/Header';
 import CustomButton from '../../components/common/CustomButton';
 import IMAGES from '../../assets/images/index';
-import {useReferralMutation} from '../../redux/services/authServices';
-import {referral} from '../../redux/services/api';
-import {getSystemErrorName} from 'util';
+import {useSelector} from 'react-redux';
+import {
+  useLazyFetchReferralByIdQuery,
+  useAddReferralsMutation,
+} from '../../redux/services/authServices';
 
 const Referrals = () => {
-  const [loading, setLoading] = useState(false);
-  const [submitData, setSubmitData] = useState([]);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [referrals, setReferrals] = useState([]);
-  const [name, setName] = useState();
-  const [email, setEmail] = useState();
-  const [phone, setPhone] = useState();
-  // const [data, setData] = useState([
-  //   {
-  //     name: '',
-  //     email: '',
-  //     date: '',
-  //     phone: '',
-  //   },
-  // ]);
-  // const [referralMutation] = useReferralMutation();
+  const id = useSelector(state => state.auth.user.result._id);
+  // console.log(id, '>>>>>>>>>>>id<<<<<<<<<<<');
+  const [data, error] = useLazyFetchReferralByIdQuery();
+  const [addReferral] = useAddReferralsMutation();
+  const values = {
+    user_mandate: id,
+    name,
+    email,
+    phone,
+  };
 
-  // const handleInputChange = (key, value) => {
-  //   setData(prevState => ({
-  //     ...prevState,
-  //     [key]: value,
-  //   }));
-  // };
+  useEffect(() => {
+    const getReferrals = async () => {
+      try {
+        const response = await data(id);
+        const referral = response.data.result;
+        console.log(referral, '>>>>123456');
+        setReferrals(referral);
+      } catch (error) {
+        console.error('Error fetching referrals:', error);
+      }
+    };
+    getReferrals();
+  }, []);
 
-  // useEffect(() => {
-  //   const getReferrals = async () => {
-  //     try {
-  //       const response = await referral();
-  //       console.log('response', response);
-  //       setReferrals(response);
-  //     } catch (error) {
-  //       throw new error();
-  //     }
-  //   };
-  //   getReferrals();
-  // }, []);
-
-  const handleSubmit = async data => {
-    const currentDate = new Date().toLocaleDateString();
-    const newData = {...data, date: currentDate};
-    setSubmitData(prevData => [...prevData, newData]);
-    setData({name: '', email: '', date: '', phone: ''});
+  const handleSubmit = async () => {
+    try {
+      const referralResponse = await addReferral(values);
+      console.log(referralResponse.data.result, '<<<<');
+      // setReferrals(referralResponse);
+    } catch (error) {
+      console.error('Error during referrals data:', error);
+    }
   };
 
   return (
@@ -100,7 +98,7 @@ const Referrals = () => {
       <View style={styles.subContainer}>
         <Text style={styles.referralHeading}>My Referrals</Text>
 
-        {submitData.map((item, index) => (
+        {referrals.map((item, index) => (
           <View key={index} style={styles.dataContainer}>
             <View
               style={{
@@ -117,7 +115,7 @@ const Referrals = () => {
                   alignItems: 'center',
                 }}>
                 <Image source={IMAGES.calendarSmall} />
-                <Text style={styles.referralData}>{item.date}</Text>
+                <Text style={styles.referralData}>{item.createdAt}</Text>
               </View>
             </View>
             <View

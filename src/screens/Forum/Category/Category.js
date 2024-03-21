@@ -2,22 +2,19 @@ import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import styles from './styles';
 import Header from '../../../components/Header/Header';
-import {useDispatch, useSelector} from 'react-redux';
-import {forumCategory} from '../../../redux/services/api';
+import {useFetchForumCategoryQuery} from '../../../redux/services/authServices';
 
 const Category = ({navigation}) => {
-  const dispatch = useDispatch();
   const [forumData, setForumData] = useState([]);
+  const {data, error} = useFetchForumCategoryQuery();
 
   useEffect(() => {
     const fetchForum = async () => {
       try {
-        const forumResponse = await forumCategory();
-        // console.log('forumResponse:', forumResponse.result);
-        setForumData(forumResponse.result);
-        // dispatch(forumCategory(data));
+        const forumResponse = await data.result;
+        setForumData(forumResponse);
       } catch (error) {
-        throw new error();
+        console.error('Error fetching forum category:', error);
       }
     };
     fetchForum();

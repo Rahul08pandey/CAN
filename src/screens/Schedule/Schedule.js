@@ -13,20 +13,21 @@ import IMAGES from '../../assets/images';
 import {Calendar} from 'react-native-calendars';
 import {schedule} from '../../redux/services/api';
 import Header from '../../components/Header/Header';
+import {useFetchEventsQuery} from '../../redux/services/authServices';
 
 const Schedule = () => {
   const [events, setEvents] = useState([]);
   const [selectDate, setSelectDate] = useState(null);
   const [selectedEvents, setSelectedEvents] = useState([]);
+  const {data, error} = useFetchEventsQuery();
 
   useEffect(() => {
     const getSchedules = async () => {
       try {
-        const eventResponse = await schedule();
-        setEvents(eventResponse.result);
-        // dispatch(eventResponse());
+        const eventResponse = await data.result;
+        setEvents(eventResponse);
       } catch (error) {
-        throw new error();
+        console.error('Error fetching events:', error);
       }
     };
     getSchedules();

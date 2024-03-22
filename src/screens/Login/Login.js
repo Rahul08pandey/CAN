@@ -8,16 +8,14 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import styles from './styles';
-import {Formik} from 'formik';
 import CustomButton from '../../components/common/CustomButton';
 import CustomHeader from '../../components/common/CustomHeader';
 import IMAGES from '../../assets/images';
-import LoginForm from './LoginForm';
 import {useDispatch, useSelector} from 'react-redux';
 import {loginSuccess} from '../../redux/actions/actions';
 import {useLoginUserMutation} from '../../redux/services/authServices';
 
-const Login = ({navigation, onSubmit}) => {
+const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();

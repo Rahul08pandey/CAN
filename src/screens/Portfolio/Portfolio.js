@@ -12,9 +12,8 @@ export default function Portfolio() {
   useEffect(() => {
     const getPortfolio = async () => {
       try {
-        const portfolioResponse = await data;
-        console.log(portfolioResponse, 'portfolioRESPONSE....../////');
-        setPortfolioData(portfolioResponse);
+        const portfolioResponse = await data();
+        setPortfolioData(portfolioResponse.data.result);
       } catch (error) {
         throw new error();
       }
@@ -38,7 +37,8 @@ export default function Portfolio() {
           marginTop: 10,
         }}>
         <Text style={styles.details}>
-          <Text style={styles.txt}>Amount:</Text> {item.amount}
+          <Text style={styles.txt}>Amount:</Text> {item.amount.total_amount}
+          {item.amount.total_amount_in}
         </Text>
         <Text style={styles.details}>
           <Text style={styles.txt}># of shares:</Text> {item.number_of_share}
@@ -51,16 +51,19 @@ export default function Portfolio() {
           marginTop: 2,
         }}>
         <Text style={styles.details}>
-          <Text style={styles.txt}>At Valuation:</Text> {item.valuation}
+          <Text style={styles.txt}>At Valuation:</Text>
+          {item.valuation.valuation_amount} {item.valuation.valuation_amount_in}
         </Text>
         <Text style={styles.details}>
-          <Text style={styles.txt}>Round Size:</Text> {item.round_size}
+          <Text style={styles.txt}>Round Size:</Text>
+          {item.round_size.round_size_amount}
+          {item.round_size.round_size_amount_in}
         </Text>
       </View>
       <View style={{marginTop: 2}}>
         <Text style={styles.details}>
           <Text style={styles.txt}>Date of Investment:</Text>
-          {item.investment}
+          {item.date}
         </Text>
       </View>
     </View>

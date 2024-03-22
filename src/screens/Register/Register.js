@@ -17,7 +17,6 @@ import {moderateScale} from '../../utils/Metrics';
 import {Dropdown} from 'react-native-element-dropdown';
 import {Formik} from 'formik';
 import RegisterForm from './RegisterForm';
-import {registerUser, fetchStates} from '../../redux/services/api';
 import {useSelector, useDispatch} from 'react-redux';
 import {setStates} from '../../redux/actions/actions';
 import {

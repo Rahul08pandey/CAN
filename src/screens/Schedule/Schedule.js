@@ -11,7 +11,6 @@ import styles from './styles';
 import {useEffect} from 'react';
 import IMAGES from '../../assets/images';
 import {Calendar} from 'react-native-calendars';
-import {schedule} from '../../redux/services/api';
 import Header from '../../components/Header/Header';
 import {useFetchEventsQuery} from '../../redux/services/authServices';
 
@@ -24,8 +23,8 @@ const Schedule = () => {
   useEffect(() => {
     const getSchedules = async () => {
       try {
-        const eventResponse = await data.result;
-        setEvents(eventResponse);
+        const eventResponse = await data;
+        setEvents(eventResponse.result);
       } catch (error) {
         console.error('Error fetching events:', error);
       }
@@ -105,7 +104,7 @@ const Schedule = () => {
                 </View>
               </View>
               <Text style={styles.descriptionTxt}>{item.description}</Text>
-              {}
+
               <View
                 style={{
                   flexDirection: 'row',

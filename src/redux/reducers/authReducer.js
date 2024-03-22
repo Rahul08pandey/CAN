@@ -1,4 +1,9 @@
-import {LOGIN_SUCCESS, LOGOUT, SET_STATES} from '../actions/actionTypes';
+import {
+  LOGIN_SUCCESS,
+  LOGOUT,
+  SET_STATES,
+  FORUM_DATA,
+} from '../actions/actionTypes';
 
 const initialState = {
   user: null,
@@ -6,6 +11,7 @@ const initialState = {
   loading: false,
   isAuthenticated: false,
   states: [],
+  forumDetails: {},
 };
 
 const authReducer = (state = initialState, action) => {
@@ -31,6 +37,12 @@ const authReducer = (state = initialState, action) => {
         error: null,
         loading: false,
         states: action.payload,
+      };
+
+    case FORUM_DATA:
+      return {
+        ...state,
+        forumDetails: action.payload,
       };
 
     default:

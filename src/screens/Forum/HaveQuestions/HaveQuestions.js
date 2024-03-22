@@ -4,33 +4,36 @@ import Header from '../../../components/Header/Header';
 import {Text, View, TextInput} from 'react-native';
 import CustomButton from '../../../components/common/CustomButton';
 import {Dropdown} from 'react-native-element-dropdown';
+import {useSelector} from 'react-redux';
 
 const HaveQuestions = ({navigation}) => {
   const [dbButton, setdbButton] = useState(true);
-  const [ques,setQues]=useState('')
+  const [ques, setQues] = useState('');
   const [response, setResponse] = useState();
-  const [selectedCategory, setSelectedCategory] = useState([
-    {
-      label: '',
-      value: '',
-    },
-    {
-      label: 'General Guideline',
-      value: 'General Guideline',
-    },
-    {
-      label: 'Pitch Session',
-      value: 'Pitch Session',
-    },
-    {
-      label: 'Valuations & MRR',
-      value: 'Valuations & MRR',
-    },
-    {
-      label: 'Go',
-      value: 'Go',
-    },
-  ]);
+  const selectedCategory = useSelector(state => state.auth);
+  console.log(selectedCategory, 'selectedCate///////');
+  // const [selectedCategory, setSelectedCategory] = useState([
+  //   {
+  //     label: '',
+  //     value: '',
+  //   },
+  //   {
+  //     label: 'General Guideline',
+  //     value: 'General Guideline',
+  //   },
+  //   {
+  //     label: 'Pitch Session',
+  //     value: 'Pitch Session',
+  //   },
+  //   {
+  //     label: 'Valuations & MRR',
+  //     value: 'Valuations & MRR',
+  //   },
+  //   {
+  //     label: 'Go',
+  //     value: 'Go',
+  //   },
+  // ]);
 
   const handleCancel = () => {
     navigation.navigate('Details');

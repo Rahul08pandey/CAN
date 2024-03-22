@@ -1,10 +1,26 @@
-import {View, Text, ScrollView, FlatList, Image} from 'react-native';
-import React from 'react';
+import {View, Text, ScrollView, Image} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import styles from './styles';
 import Header from '../../components/Header/Header';
 import IMAGES from '../../assets/images';
+import {useFetchActiveMandateMutation} from '../../redux/services/authServices';
 
 const Home = ({navigation}) => {
+  // const [data, setData] = useState([]);
+  // const [getData] = useFetchActiveMandateMutation();
+
+  // useEffect(() => {
+  //   const allData = async () => {
+  //     try {
+  //       const response = await getData();
+  //       console.log(response, '..........[[[[[[]]]');
+  //       setData(response);
+  //     } catch (error) {
+  //       console.error('Error fetching active mandate:', error);
+  //     }
+  //   };
+  //   allData();
+  // }, []);
   const data = [
     {
       name: 'Jerry Imfotech',
@@ -77,8 +93,8 @@ const Home = ({navigation}) => {
         <View style={{flexDirection: 'row'}}>
           <Image source={require('../../assets/images/jerry.png')} />
           <View style={{flexDirection: 'column'}}>
-            <Text style={styles.name}>{item.name}</Text>
-            <Text style={styles.text}>{item.text}</Text>
+            <Text style={styles.name}>{item.company_name}</Text>
+            <Text style={styles.text}>{item.description}</Text>
           </View>
         </View>
         <View
@@ -88,10 +104,16 @@ const Home = ({navigation}) => {
             marginTop: 10,
           }}>
           <Text style={styles.details}>
-            <Text style={styles.txt}>MRR:</Text> {item.MRP}
+            <Text style={styles.txt}>MRR:</Text>
+            {item.MRP}
+            {/* {item.mrr.mrr_amount} */}
+            {/* {item.mrr.mrr_amount_in} */}
           </Text>
           <Text style={styles.details}>
-            <Text style={styles.txt}>Round Size:</Text> {item.roundSize}
+            <Text style={styles.txt}>Round Size:</Text>
+            {item.roundSize}
+            {/* {item.round_size.round_size_amount}
+            {item.round_size.round_size_amount_in} */}
           </Text>
         </View>
         <View
@@ -101,10 +123,16 @@ const Home = ({navigation}) => {
             marginTop: 2,
           }}>
           <Text style={styles.details}>
-            <Text style={styles.txt}>Valuation:</Text> {item.valuation}
+            <Text style={styles.txt}>Valuation:</Text>
+            {item.valuation}
+            {/* {item.valuation.valuation_amount}
+            {item.valuation.valuation_amount_in} */}
           </Text>
           <Text style={styles.details}>
-            <Text style={styles.txt}>Commitment:</Text> {item.commitment}
+            <Text style={styles.txt}>Commitment:</Text>
+            {item.commitment}
+            {/* {item.commitment.commitment_amount}
+            {item.commitment.commitment_amount_in} */}
           </Text>
         </View>
       </View>

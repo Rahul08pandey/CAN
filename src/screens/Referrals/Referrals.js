@@ -11,43 +11,48 @@ import {
 } from '../../redux/services/authServices';
 
 const Referrals = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+  const [referralData, setReferralData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    date: '',
+  });
   const [referrals, setReferrals] = useState([]);
   const id = useSelector(state => state.auth.user.result._id);
-  // console.log(id, '>>>>>>>>>>>id<<<<<<<<<<<');
   const [data, error] = useLazyFetchReferralByIdQuery();
   const [addReferral] = useAddReferralsMutation();
-  const values = {
-    user_mandate: id,
-    name,
-    email,
-    phone,
+
+  const getReferrals = async () => {
+    try {
+      const response = await data(id);
+      const referral = response.data.result;
+      console.log(referral);
+      setReferrals(referral);
+    } catch (error) {
+      console.error('Error fetching referrals:', error);
+    }
   };
 
   useEffect(() => {
-    const getReferrals = async () => {
-      try {
-        const response = await data(id);
-        const referral = response.data.result;
-        console.log(referral, '>>>>123456');
-        setReferrals(referral);
-      } catch (error) {
-        console.error('Error fetching referrals:', error);
-      }
-    };
     getReferrals();
   }, []);
 
   const handleSubmit = async () => {
     try {
-      const referralResponse = await addReferral(values);
-      console.log(referralResponse.data.result, '<<<<');
-      // setReferrals(referralResponse);
+      const updatedReferralData = {...referralData};
+      await addReferral(updatedReferralData);
+      getReferrals();
+      setReferralData({name: '', email: '', phone: ''});
     } catch (error) {
       console.error('Error during referrals data:', error);
     }
+  };
+
+  const handleInputChange = (field, value) => {
+    setReferralData(prevState => ({
+      ...prevState,
+      [field]: value,
+    }));
   };
 
   return (
@@ -62,34 +67,31 @@ const Referrals = () => {
         <View style={styles.inputContainer}>
           <Text style={styles.txtInputHeading}>Name</Text>
           <TextInput
-            value={name}
+            value={referralData.name}
             style={styles.txtInput}
             placeholder="Enter Name"
             placeholderTextColor="rgba(0, 0, 0, 0.27)"
-            // onChangeText={text => handleInputChange('name', text)}
-            onChangeText={text => setName(text)}
+            onChangeText={text => handleInputChange('name', text)}
           />
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.txtInputHeading}>Email</Text>
           <TextInput
-            value={email}
+            value={referralData.email}
             style={styles.txtInput}
             placeholder="Enter Email"
             placeholderTextColor="rgba(0, 0, 0, 0.27)"
-            // onChangeText={text => handleInputChange('email', text)}
-            onChangeText={text => setEmail(text)}
+            onChangeText={text => handleInputChange('email', text)}
           />
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.txtInputHeading}>Phone</Text>
           <TextInput
-            value={phone}
+            value={referralData.phone}
             style={styles.txtInput}
             placeholder="Enter Phone"
             placeholderTextColor="rgba(0, 0, 0, 0.27)"
-            // onChangeText={text => handleInputChange('phone', text)}
-            onChangeText={text => setPhone(text)}
+            onChangeText={text => handleInputChange('phone', text)}
           />
         </View>
         <CustomButton title="Submit" onPress={handleSubmit} />
@@ -115,7 +117,9 @@ const Referrals = () => {
                   alignItems: 'center',
                 }}>
                 <Image source={IMAGES.calendarSmall} />
-                <Text style={styles.referralData}>{item.createdAt}</Text>
+                <Text style={styles.referralData}>
+                  {new Date(item.createdAt).toLocaleDateString()}
+                </Text>
               </View>
             </View>
             <View

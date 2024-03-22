@@ -63,7 +63,7 @@ export default styles = StyleSheet.create({
 
   referralData: {
     fontSize: moderateScale(16),
-    marginLeft: moderateScale(10),
+    marginLeft: moderateScale(5),
     color: '#00000080',
     fontFamily: 'Nunito-Regular',
   },

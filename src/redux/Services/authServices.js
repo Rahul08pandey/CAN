@@ -39,6 +39,33 @@ export const authService = clientApi.injectEndpoints({
       }),
     }),
 
+    getDetails: builder.query({
+      query: () => ({
+        url: `/get_all_forum_question`,
+        method: 'GET',
+      }),
+    }),
+
+    // getQuestions: builder.query({
+    //   query: () => ({
+    //     url:`/`
+    //   })
+    // })
+
+    fetchActiveMandate: builder.mutation({
+      query: () => ({
+        url: `/mandate/list`,
+        method: 'POST',
+      }),
+    }),
+
+    fetchPortfolio: builder.query({
+      query: () => ({
+        url: `/get_all_portfolio`,
+        method: 'GET',
+      }),
+    }),
+
     fetchReferralById: builder.query({
       query: _id => ({
         url: `/referral/list_by_mandate?user_mandate=${_id}`,
@@ -50,6 +77,14 @@ export const authService = clientApi.injectEndpoints({
       query: body => ({
         url: `/add/referral`,
         method: 'POST',
+        body: body,
+      }),
+    }),
+
+    changePassword: builder.mutation({
+      query: body => ({
+        url: `/update-password`,
+        method: 'PUT',
         body: body,
       }),
     }),
@@ -65,4 +100,7 @@ export const {
   useLazyFetchReferralByIdQuery,
   useLazyFetchPortfolioQuery,
   useAddReferralsMutation,
+  useLazyGetDetailsQuery,
+  useChangePasswordMutation,
+  useFetchActiveMandateMutation,
 } = authService;

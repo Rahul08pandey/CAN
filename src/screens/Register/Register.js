@@ -33,21 +33,25 @@ const Register = ({navigation, onSubmit}) => {
   const initialValues = {
     name: '',
     email: '',
+    phone: '',
     password: '',
     organization: '',
     state: '',
     city: '',
   };
+
   const [registerUserMutation] = useRegisterUserMutation();
   const {data, error} = useFetchStatesQuery();
 
-  const handleRegister = async initialValues => {
+  const handleRegister = async values => {
     try {
       setLoading(true);
-      const response = await registerUserMutation(initialValues);
+      const response = await registerUserMutation(values);
+      console.log(response);
       setLoading(false);
       if (response.data) {
         const registerData = response.data;
+        console.log(registerData, 'REGISTER');
         setShowAlert(true);
       } else {
         Alert.alert(
@@ -66,9 +70,12 @@ const Register = ({navigation, onSubmit}) => {
     const fetchStatesData = async () => {
       try {
         setLoading(true);
-        const statesResponse = await data.result;
-        console.log(statesResponse, '??????statesREsponse');
-        dispatch(setStates(statesResponse));
+        if (data && data.result) {
+          const response = data.result;
+          dispatch(setStates(response));
+        } else {
+          console.error('Error fetching states');
+        }
       } catch (err) {
         console.error('Error fetching states:', err);
       } finally {
@@ -128,6 +135,20 @@ const Register = ({navigation, onSubmit}) => {
               />
               {errors.email && (
                 <Text style={styles.errTxt}>{errors.email}</Text>
+              )}
+            </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.txtInputHeading}>Phone</Text>
+              <TextInput
+                value={values.phone}
+                style={styles.txtInput}
+                placeholder="Enter Phone No."
+                placeholderTextColor="rgba(0, 0, 0, 0.27)"
+                onChangeText={handleChange('phone')}
+                keyboardType="phone-pad"
+              />
+              {errors.phone && (
+                <Text style={styles.errTxt}>{errors.phone}</Text>
               )}
             </View>
             <View style={styles.inputContainer}>

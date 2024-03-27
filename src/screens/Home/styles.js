@@ -26,7 +26,6 @@ export default styles = StyleSheet.create({
     borderRadius: moderateScale(10),
     marginBottom: moderateScale(10),
     borderWidth: moderateScale(0.4),
-    // shadowOpacity: 1,
     shadowColor: 'black',
     backgroundColor: '#ffffff',
     shadowOffset: {width: 0, height: 2},

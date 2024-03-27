@@ -6,47 +6,21 @@ import IMAGES from '../../assets/images';
 import {useFetchActiveMandateMutation} from '../../redux/services/authServices';
 
 const Home = ({navigation}) => {
-  // const [data, setData] = useState([]);
-  // const [getData] = useFetchActiveMandateMutation();
+  const [data, setData] = useState([]);
+  const [getData] = useFetchActiveMandateMutation();
 
-  // useEffect(() => {
-  //   const allData = async () => {
-  //     try {
-  //       const response = await getData();
-  //       console.log(response, '..........[[[[[[]]]');
-  //       setData(response);
-  //     } catch (error) {
-  //       console.error('Error fetching active mandate:', error);
-  //     }
-  //   };
-  //   allData();
-  // }, []);
-  const data = [
-    {
-      name: 'Jerry Imfotech',
-      text: 'On demand food delivery startup',
-      MRP: 'INR 1.50 lakhs',
-      roundSize: 'INR 50 lakhs',
-      valuation: 'INR 3.5 Cr',
-      commitment: 'INR 20 lakhs',
-    },
-    {
-      name: 'Chaiwala',
-      text: 'Authentic Indian Tea',
-      MRP: 'INR 1.50 lakhs',
-      roundSize: 'INR 50 lakhs',
-      valuation: 'INR 3.5 Cr',
-      commitment: 'INR 20 lakhs',
-    },
-    {
-      name: 'DX Drones',
-      text: 'Robotics, drones',
-      MRP: 'INR 50 lakhs',
-      roundSize: 'INR 3.5 Cr',
-      valuation: 'INR 5.50 Cr',
-      commitment: 'INR 50 lakhs',
-    },
-  ];
+  useEffect(() => {
+    const allData = async () => {
+      try {
+        const response = await getData();
+        const res = response.data.result;
+        setData(res);
+      } catch (error) {
+        console.error('Error fetching active mandate:', error);
+      }
+    };
+    allData();
+  }, []);
 
   const agendaData = [
     {
@@ -91,8 +65,8 @@ const Home = ({navigation}) => {
     return data.map((item, index) => (
       <View key={index} style={styles.itemData}>
         <View style={{flexDirection: 'row'}}>
-          <Image source={require('../../assets/images/jerry.png')} />
-          <View style={{flexDirection: 'column'}}>
+          <Image source={IMAGES.jerry} />
+          <View style={{flexDirection: 'column', flex: 1}}>
             <Text style={styles.name}>{item.company_name}</Text>
             <Text style={styles.text}>{item.description}</Text>
           </View>
@@ -105,15 +79,13 @@ const Home = ({navigation}) => {
           }}>
           <Text style={styles.details}>
             <Text style={styles.txt}>MRR:</Text>
-            {item.MRP}
-            {/* {item.mrr.mrr_amount} */}
-            {/* {item.mrr.mrr_amount_in} */}
+            {item.mrr.mrr_amount}
+            {item.mrr.mrr_amount_in}
           </Text>
           <Text style={styles.details}>
             <Text style={styles.txt}>Round Size:</Text>
-            {item.roundSize}
-            {/* {item.round_size.round_size_amount}
-            {item.round_size.round_size_amount_in} */}
+            {item.round_size.round_size_amount}
+            {item.round_size.round_size_amount_in}
           </Text>
         </View>
         <View
@@ -124,15 +96,15 @@ const Home = ({navigation}) => {
           }}>
           <Text style={styles.details}>
             <Text style={styles.txt}>Valuation:</Text>
-            {item.valuation}
-            {/* {item.valuation.valuation_amount}
-            {item.valuation.valuation_amount_in} */}
+
+            {item.valuation.valuation_amount}
+            {item.valuation.valuation_amount_in}
           </Text>
           <Text style={styles.details}>
             <Text style={styles.txt}>Commitment:</Text>
-            {item.commitment}
-            {/* {item.commitment.commitment_amount}
-            {item.commitment.commitment_amount_in} */}
+
+            {item.commitment.commitment_amount}
+            {item.commitment.commitment_amount_in}
           </Text>
         </View>
       </View>

@@ -24,7 +24,8 @@ const Schedule = () => {
     const getSchedules = async () => {
       try {
         const eventResponse = await data;
-        setEvents(eventResponse.result);
+        const res = eventResponse.result;
+        setEvents(res);
       } catch (error) {
         console.error('Error fetching events:', error);
       }

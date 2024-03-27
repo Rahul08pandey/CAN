@@ -4,6 +4,7 @@ import styles from './styles';
 import Header from '../../../components/Header/Header';
 import {useDispatch} from 'react-redux';
 import {useFetchForumCategoryQuery} from '../../../redux/services/authServices';
+import {forumDetails} from '../../../redux/actions/actions';
 
 const Category = ({navigation}) => {
   const dispatch = useDispatch();
@@ -14,7 +15,10 @@ const Category = ({navigation}) => {
     const fetchForum = async () => {
       try {
         const forumResponse = await data;
-        setForumData(forumResponse?.result);
+        const res = forumResponse.result;
+        const id = forumData.map(item => item._id);
+        // console.log(id, 'IDDD');
+        setForumData(res);
       } catch (error) {
         console.error('Error fetching forum category:', error);
       }
@@ -22,8 +26,9 @@ const Category = ({navigation}) => {
     fetchForum();
   }, []);
 
-  const infoData = () => {
+  const infoData = item => {
     navigation.navigate('Details');
+    dispatch(forumDetails(item));
   };
 
   const renderForumData = ({item}) => (

@@ -5,36 +5,37 @@ import Header from '../../components/Header/Header';
 import CustomButton from '../../components/common/CustomButton';
 import CustomAlert from '../../components/common/CustomAlert/CustomAlert';
 import {useChangePasswordMutation} from '../../redux/services/authServices';
+import {useSelector} from 'react-redux';
 
 const ChangePassword = ({navigation}) => {
-  const [current_password, setCurrPassword] = useState('');
+  const [currPassword, setCurrPassword] = useState('');
+  const [confirmCurrPassword, setConfirmCurrPassword] = useState('');
   const [new_password, setNewPassword] = useState('');
   const [showAlert, setShowAlert] = useState(false);
-  const [changePassword, setChangePassword] = useState([]);
   const [changeUserPassword] = useChangePasswordMutation();
+  const id = useSelector(state => state.auth.user.result._id);
+  console.log(id, 'IDD');
 
-  useEffect(() => {
-    const changePass = async () => {
-      try {
-        const body = {current_password, new_password};
-        const response = await changeUserPassword(body);
-        const changePassResponse = response.data;
-        console.log(changePassResponse, 'CHANGE_PASSWORD');
-        setChangePassword(changePassResponse);
-      } catch (error) {
-        console.error('Error in changing password:', error);
-      }
-    };
-    changePass();
-  }, []);
+  const params = {
+    id: id,
+    current_password: currPassword,
+    new_password: new_password,
+  };
+
+  const handleUpdate = async () => {
+    console.log(params, 'PARAMS');
+    try {
+      const response = await changeUserPassword(params);
+      console.log(response.data.status, 'RESPONSE///');
+      setShowAlert(false);
+      navigation.navigate('Login');
+    } catch (error) {
+      console.error('Error in changing password:', error);
+    }
+  };
 
   const openModal = () => {
     setShowAlert(true);
-  };
-
-  const handleUpdate = () => {
-    setShowAlert(false);
-    navigation.navigate('Login');
   };
 
   return (
@@ -46,17 +47,17 @@ const ChangePassword = ({navigation}) => {
         <View style={styles.inputContainer}>
           <Text style={styles.passTxt}>Current Password</Text>
           <TextInput
-            value={current_password}
+            value={currPassword}
             style={styles.txtInput}
             placeholder="Enter your current password"
             onChangeText={text => setCurrPassword(text)}
           />
           <Text style={styles.passTxt}>Confirm Current Password</Text>
           <TextInput
-            value={current_password}
+            value={confirmCurrPassword}
             style={styles.txtInput}
             placeholder="Enter current password again"
-            onChangeText={text => setCurrPassword(text)}
+            onChangeText={text => setConfirmCurrPassword(text)}
           />
           <Text style={styles.passTxt}>New Password</Text>
           <TextInput

@@ -6,45 +6,23 @@ import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {useLazyGetDetailsQuery} from '../../../redux/services/authServices';
 
 const Details = ({navigation, route}) => {
-  // const {params} = route;
-  // const ans = params && params.ans ? params.ans : '';
-  // const ques = params && params.ques ? params.ques : '';
   const [detailData, setDetailData] = useState([]);
   const [data, error] = useLazyGetDetailsQuery();
-  const id = useSelector(state => state.auth);
-  console.log(id, 'IDDD');
+  // const category_id = useSelector(state => state.auth.forumDetails.category_id);
+  // console.log(category_id, 'IDD');
 
   useEffect(() => {
     const getDetailData = async () => {
       try {
         const forumDetails = await data();
-        console.log(forumDetails.data.result, 'dhggfgjh');
-        setDetailData(forumDetails);
+        const res = forumDetails.data.result;
+        setDetailData(res);
       } catch (error) {
         console.error('Error during questions', error);
       }
     };
     getDetailData();
   }, []);
-
-  // const detailData = [
-  //   {
-  //     ques: 'Who is evaluating the initial valuations?',
-  //     ans: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-  //   },
-  //   {
-  //     ques: 'What is MRR?',
-  //     ans: ans ? ans : '',
-  //   },
-  //   {
-  //     ques: 'What is round size?',
-  //     ans: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-  //   },
-  //   {
-  //     ques: 'What is commitment?',
-  //     ans: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-  //   },
-  // ];
 
   const handleQuestions = () => {
     navigation.navigate('HaveQuestions');
@@ -62,7 +40,7 @@ const Details = ({navigation, route}) => {
       </View>
     ) : (
       <View style={styles.dataContainer}>
-        <TouchableOpacity onPress={infoData}>
+        <TouchableOpacity onPress={() => infoData(item)}>
           <Text style={styles.ques}>{item.quetion}</Text>
           <Text style={styles.ans}>Add an Answer</Text>
         </TouchableOpacity>

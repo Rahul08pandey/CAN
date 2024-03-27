@@ -4,7 +4,7 @@ export const authService = clientApi.injectEndpoints({
   endpoints: builder => ({
     loginUser: builder.mutation({
       query: credentials => ({
-        url: `/login`,
+        url: `/investor_login`,
         method: 'POST',
         body: credentials,
       }),
@@ -12,7 +12,7 @@ export const authService = clientApi.injectEndpoints({
 
     registerUser: builder.mutation({
       query: body => ({
-        url: `/register`,
+        url: `/add_Investor`,
         method: 'POST',
         body: body,
       }),
@@ -66,6 +66,13 @@ export const authService = clientApi.injectEndpoints({
       }),
     }),
 
+    updateProfile: builder.mutation({
+      query: () => ({
+        url: `/update`,
+        method: 'PUT',
+      }),
+    }),
+
     fetchReferralById: builder.query({
       query: _id => ({
         url: `/referral/list_by_mandate?user_mandate=${_id}`,
@@ -101,6 +108,7 @@ export const {
   useLazyFetchPortfolioQuery,
   useAddReferralsMutation,
   useLazyGetDetailsQuery,
+  useUpdateProfileMutation,
   useChangePasswordMutation,
   useFetchActiveMandateMutation,
 } = authService;

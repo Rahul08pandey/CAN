@@ -1,4 +1,4 @@
-import {Text, TouchableOpacity, View, Image, TextInput} from 'react-native';
+import {Text, View, TextInput} from 'react-native';
 import React, {useState} from 'react';
 import styles from './styles';
 import CustomButton from '../../components/common/CustomButton';

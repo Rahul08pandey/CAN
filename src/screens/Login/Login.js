@@ -30,6 +30,7 @@ const Login = ({navigation}) => {
       setLoading(true);
       const credentials = {email, password};
       const response = await loginUserMutation(credentials);
+      console.log(response, 'RESPONSE');
       setLoading(false);
       if (response.data.status) {
         const userData = response.data;

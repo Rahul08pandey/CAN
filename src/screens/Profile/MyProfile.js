@@ -13,25 +13,49 @@ import CustomButton from '../../components/common/CustomButton';
 import {Calendar} from 'react-native-calendars';
 import IMAGES from '../../assets/images';
 import CustomAlert from '../../components/common/CustomAlert/CustomAlert';
+import {useUpdateProfileMutation} from '../../redux/services/authServices';
+import {useSelector} from 'react-redux';
 
-const MyProfile = ({navigation}) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [organization, setOrganization] = useState('');
-  const [state, setState] = useState('');
-  const [city, setCity] = useState('');
+const MyProfile = () => {
+  const userData = useSelector(state => state.auth.user.result);
+  const [name, setName] = useState(userData.name.toString());
+  const [email, setEmail] = useState(userData.email.toString());
+  const [phone, setPhone] = useState(userData.phone.toString());
+  const [organization, setOrganization] = useState(
+    userData.organization.toString(),
+  );
+  const [state, setState] = useState(userData.state.toString());
+  const [city, setCity] = useState(userData.city.toString());
   const [isCalendar, setIsCalendar] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
+  const [isEmailEditable, setIsEmailEditable] = useState(false);
+  const [profileData] = useUpdateProfileMutation();
+
+  const params = {
+    id: userData._id,
+    name,
+    email,
+    phone,
+    organization,
+    state,
+    city,
+  };
+  console.log(params, 'PARAMS>>>>>>>');
+
+  const handleUpdate = async () => {
+    try {
+      const response = await profileData(params);
+      console.log(params, 'params/////');
+      console.log(response, 'RESPONSE');
+      setShowAlert(true);
+    } catch (error) {
+      console.error('Error updating profile:', error);
+    }
+  };
 
   const handleLogin = () => {
     setShowAlert(false);
-    navigation.navigate('Login');
-  };
-
-  const handleUpdate = () => {
-    setShowAlert(true);
   };
 
   const handleCalendarPress = () => {
@@ -68,6 +92,7 @@ const MyProfile = ({navigation}) => {
           <TextInput
             value={email}
             placeholder="Enter Email"
+            editable={isEmailEditable}
             style={styles.txtInput}
             onChangeText={text => setEmail(text)}
           />

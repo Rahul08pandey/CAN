@@ -12,12 +12,14 @@ import Header from '../../components/Header/Header';
 import CustomButton from '../../components/common/CustomButton';
 import {Calendar} from 'react-native-calendars';
 import IMAGES from '../../assets/images';
+import {Dropdown} from 'react-native-element-dropdown';
 import CustomAlert from '../../components/common/CustomAlert/CustomAlert';
 import {useUpdateProfileMutation} from '../../redux/services/authServices';
 import {useSelector} from 'react-redux';
 
 const MyProfile = () => {
   const userData = useSelector(state => state.auth.user.result);
+  const getStates = useSelector(state => state.auth.states);
   const [name, setName] = useState(userData.name.toString());
   const [email, setEmail] = useState(userData.email.toString());
   const [phone, setPhone] = useState(userData.phone.toString());
@@ -30,7 +32,7 @@ const MyProfile = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const [isEmailEditable, setIsEmailEditable] = useState(false);
-  const [profileData] = useUpdateProfileMutation();
+  const [profileMutation] = useUpdateProfileMutation();
 
   const params = {
     id: userData._id,
@@ -41,13 +43,11 @@ const MyProfile = () => {
     state,
     city,
   };
-  console.log(params, 'PARAMS>>>>>>>');
 
   const handleUpdate = async () => {
     try {
-      const response = await profileData(params);
-      console.log(params, 'params/////');
-      console.log(response, 'RESPONSE');
+      setShowAlert(false);
+      const response = await profileMutation(params);
       setShowAlert(true);
     } catch (error) {
       console.error('Error updating profile:', error);
@@ -124,11 +124,14 @@ const MyProfile = () => {
             onChangeText={text => setOrganization(text)}
           />
           <Text style={styles.txtInputHeading}>State</Text>
-          <TextInput
+          <Dropdown
+            data={getStates}
+            placeholder={state}
+            labelField="state"
+            valueField="_id"
+            onChange={item => setState(item.state)}
+            style={styles.dropDown}
             value={state}
-            style={styles.txtInput}
-            placeholder="Enter State"
-            onChangeText={text => setState(text)}
           />
           <Text style={styles.txtInputHeading}>City</Text>
           <TextInput

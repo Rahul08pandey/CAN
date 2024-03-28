@@ -3,16 +3,19 @@ import React, {useEffect, useState} from 'react';
 import Header from '../../components/Header/Header';
 import styles from './styles';
 import IMAGES from '../../assets/images';
+import {useSelector} from 'react-redux';
 import {useLazyFetchPortfolioQuery} from '../../redux/services/authServices';
 
 export default function Portfolio() {
+  const userId = useSelector(state => state.auth.user.result._id);
+  console.log(userId);
   const [portfolioData, setPortfolioData] = useState([]);
   const [data, error] = useLazyFetchPortfolioQuery();
 
   useEffect(() => {
     const getPortfolio = async () => {
       try {
-        const portfolioResponse = await data();
+        const portfolioResponse = await data(userId);
         setPortfolioData(portfolioResponse.data.result);
       } catch (error) {
         throw new error();

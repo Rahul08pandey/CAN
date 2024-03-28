@@ -61,6 +61,13 @@ export default styles = StyleSheet.create({
     borderWidth: moderateScale(0.2),
   },
 
+  dropDown: {
+    height: moderateScale(50),
+    borderWidth: moderateScale(0.2),
+    borderRadius: moderateScale(8),
+    paddingLeft: moderateScale(10),
+  },
+
   img: {
     marginRight: moderateScale(10),
   },

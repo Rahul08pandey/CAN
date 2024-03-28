@@ -1,5 +1,5 @@
-import {Text, View, TextInput} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import {Text, View, TextInput, Alert} from 'react-native';
+import React, {useState} from 'react';
 import styles from './styles';
 import Header from '../../components/Header/Header';
 import CustomButton from '../../components/common/CustomButton';
@@ -10,32 +10,45 @@ import {useSelector} from 'react-redux';
 const ChangePassword = ({navigation}) => {
   const [currPassword, setCurrPassword] = useState('');
   const [confirmCurrPassword, setConfirmCurrPassword] = useState('');
-  const [new_password, setNewPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
   const [showAlert, setShowAlert] = useState(false);
-  const [changeUserPassword] = useChangePasswordMutation();
+  const [updatePassword] = useChangePasswordMutation();
   const id = useSelector(state => state.auth.user.result._id);
-  console.log(id, 'IDD');
 
   const params = {
-    id: id,
+    _id: id,
     current_password: currPassword,
-    new_password: new_password,
+    new_password: newPassword,
   };
 
   const handleUpdate = async () => {
-    console.log(params, 'PARAMS');
+    if (currPassword !== confirmCurrPassword) {
+      Alert.alert(
+        'Update Failed!',
+        'Current password and confirm password does not match.',
+      );
+      return;
+    }
+
     try {
-      const response = await changeUserPassword(params);
-      console.log(response.data.status, 'RESPONSE///');
-      setShowAlert(false);
-      navigation.navigate('Login');
+      const response = await updatePassword(params);
+      if ((response.data.status = true)) {
+        setShowAlert(true);
+      } else {
+        Alert.alert(data.data.message);
+      }
     } catch (error) {
-      console.error('Error in changing password:', error);
+      console.log('Error in changing password:', error);
     }
   };
 
   const openModal = () => {
-    setShowAlert(true);
+    handleUpdate();
+  };
+
+  const closeModal = () => {
+    setShowAlert(false);
+    navigation.navigate('Login');
   };
 
   return (
@@ -63,7 +76,7 @@ const ChangePassword = ({navigation}) => {
           <TextInput
             placeholder="Enter new password"
             style={styles.txtInput}
-            value={new_password}
+            value={newPassword}
             onChangeText={text => setNewPassword(text)}
           />
         </View>
@@ -74,7 +87,7 @@ const ChangePassword = ({navigation}) => {
             title="Thank You!"
             message="Your password has been successfully updated."
             btnTxt="OK"
-            onPress={handleUpdate}
+            onPress={closeModal}
           />
         )}
       </View>

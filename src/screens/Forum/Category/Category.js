@@ -3,21 +3,19 @@ import React, {useEffect, useState} from 'react';
 import styles from './styles';
 import Header from '../../../components/Header/Header';
 import {useDispatch} from 'react-redux';
-import {useFetchForumCategoryQuery} from '../../../redux/services/authServices';
+import {useLazyFetchForumCategoryQuery} from '../../../redux/services/authServices';
 import {forumDetails} from '../../../redux/actions/actions';
 
 const Category = ({navigation}) => {
   const dispatch = useDispatch();
   const [forumData, setForumData] = useState([]);
-  const {data, error} = useFetchForumCategoryQuery();
+  const [data] = useLazyFetchForumCategoryQuery();
 
   useEffect(() => {
     const fetchForum = async () => {
       try {
-        const forumResponse = await data;
-        const res = forumResponse.result;
-        const id = forumData.map(item => item._id);
-        // console.log(id, 'IDDD');
+        const forumResponse = await data();
+        const res = forumResponse.data.result;
         setForumData(res);
       } catch (error) {
         console.error('Error fetching forum category:', error);
@@ -33,7 +31,7 @@ const Category = ({navigation}) => {
 
   const renderForumData = ({item}) => (
     <View style={styles.dataContainer}>
-      <TouchableOpacity onPress={infoData}>
+      <TouchableOpacity onPress={() => infoData(item)}>
         <Text style={styles.category_name}>{item.category_name}</Text>
         <Text style={styles.description}>{item.description}</Text>
       </TouchableOpacity>

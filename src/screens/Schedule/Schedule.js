@@ -12,19 +12,19 @@ import {useEffect} from 'react';
 import IMAGES from '../../assets/images';
 import {Calendar} from 'react-native-calendars';
 import Header from '../../components/Header/Header';
-import {useFetchEventsQuery} from '../../redux/services/authServices';
+import {useLazyFetchEventsQuery} from '../../redux/services/authServices';
 
 const Schedule = () => {
   const [events, setEvents] = useState([]);
   const [selectDate, setSelectDate] = useState(null);
   const [selectedEvents, setSelectedEvents] = useState([]);
-  const {data, error} = useFetchEventsQuery();
+  const [data] = useLazyFetchEventsQuery();
 
   useEffect(() => {
     const getSchedules = async () => {
       try {
-        const eventResponse = await data;
-        const res = eventResponse.result;
+        const eventResponse = await data();
+        const res = eventResponse.data.result;
         setEvents(res);
       } catch (error) {
         console.error('Error fetching events:', error);

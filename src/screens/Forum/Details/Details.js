@@ -8,13 +8,13 @@ import {useLazyGetDetailsQuery} from '../../../redux/services/authServices';
 const Details = ({navigation, route}) => {
   const [detailData, setDetailData] = useState([]);
   const [data, error] = useLazyGetDetailsQuery();
-  // const category_id = useSelector(state => state.auth.forumDetails.category_id);
-  // console.log(category_id, 'IDD');
+  const category_id = useSelector(state => state.auth.forumDetails._id);
+  console.log(category_id, 'IDD');
 
   useEffect(() => {
     const getDetailData = async () => {
       try {
-        const forumDetails = await data();
+        const forumDetails = await data(category_id);
         const res = forumDetails.data.result;
         setDetailData(res);
       } catch (error) {

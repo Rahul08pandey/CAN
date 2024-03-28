@@ -27,7 +27,7 @@ export const authService = clientApi.injectEndpoints({
 
     fetchEvents: builder.query({
       query: () => ({
-        url: `/get_Events`,
+        url: `/getEventtillDate`,
         method: 'GET',
       }),
     }),
@@ -60,16 +60,17 @@ export const authService = clientApi.injectEndpoints({
     }),
 
     fetchPortfolio: builder.query({
-      query: () => ({
-        url: `/get_all_portfolio`,
+      query: _id => ({
+        url: `/portfolio/list_by_mandate?user_registered_id=${_id}`,
         method: 'GET',
       }),
     }),
 
     updateProfile: builder.mutation({
-      query: () => ({
-        url: `/update`,
+      query: body => ({
+        url: `/update_Investor`,
         method: 'PUT',
+        body: body,
       }),
     }),
 
@@ -90,7 +91,7 @@ export const authService = clientApi.injectEndpoints({
 
     changePassword: builder.mutation({
       query: body => ({
-        url: `/update-password`,
+        url: `/update-password/investor`,
         method: 'PUT',
         body: body,
       }),
@@ -102,8 +103,8 @@ export const {
   useLoginUserMutation,
   useRegisterUserMutation,
   useFetchStatesQuery,
-  useFetchEventsQuery,
-  useFetchForumCategoryQuery,
+  useLazyFetchEventsQuery,
+  useLazyFetchForumCategoryQuery,
   useLazyFetchReferralByIdQuery,
   useLazyFetchPortfolioQuery,
   useAddReferralsMutation,

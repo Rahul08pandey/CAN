@@ -32,6 +32,6 @@ export default styles = StyleSheet.create({
     color: '#000000',
     borderRadius: moderateScale(8),
     borderWidth: moderateScale(0.2),
-    paddingLeft: moderateScale(20),
+    paddingLeft: moderateScale(10),
   },
 });
